@@ -5,5 +5,5 @@ enable_language(ASM)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_ASM_FLAGS "${CFLAGS} -x assembler-with-cpp")
 
-set(SOURCE_FILES main.cpp fiber_switch.S)
+set(SOURCE_FILES main.cpp fiber_switch.S Fiber.h Fiber.cpp)
 add_executable(Fibers ${SOURCE_FILES})
