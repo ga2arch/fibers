@@ -9,7 +9,7 @@ std::array<Fiber, Fiber::MAXFIBERS> Fiber::fibers;
 
 void Fiber::init() {
     current = &fibers.at(0);
-    current->status = Fiber::Ready;
+    current->status = Fiber::Running;
 }
 
 bool Fiber::yield() {
@@ -32,8 +32,8 @@ bool Fiber::yield() {
     }
 
     f->status = Fiber::Running;
-    auto old_ctx = &current->ctx;
-    auto new_ctx = &f->ctx;
+    auto old_ctx = &current->context;
+    auto new_ctx = &f->context;
 
     current = f;
     fiber_switch(old_ctx, new_ctx);
@@ -73,7 +73,7 @@ int Fiber::run(void (*fun)(void)) {
     *(uint64_t *)&stack[STACKSIZE - 8] = (uint64_t)stop;
     *(uint64_t *)&stack[STACKSIZE - 16] = (uint64_t)fun;
 
-    f->ctx.rsp = (uint64_t)&stack[STACKSIZE - 16];
+    f->context.rsp = (uint64_t)&stack[STACKSIZE - 16];
     f->status = Fiber::Ready;
 
     return 0;
